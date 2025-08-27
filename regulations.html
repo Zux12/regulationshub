@@ -44,6 +44,52 @@
   .note{background:#0d1533;border:1px dashed var(--border);padding:10px 12px;border-radius:10px;color:var(--muted);font-size:13px}
   footer{margin-top:22px;color:var(--muted);font-size:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   @media (max-width:520px){ .row .btn{flex:1} }
+
+  /* --- Mobile header improvements --- */
+@media (max-width: 640px){
+  .wrap{ padding:14px; }
+
+  header{ margin-bottom:12px; }
+
+  /* stack logo + text, center, and give it a neat card look */
+  .brand{
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+  }
+
+  /* let the logo keep its aspect ratio and scale without cropping */
+  .brand img{
+    max-width: 80%;      /* responsive width */
+    height: auto;        /* keep proportions */
+    max-height: none;    /* remove height cap for tall logos */
+    border-radius: 10px; /* softer corners */
+  }
+
+  /* tighten and center the headings */
+  h1{
+    font-size: 18px;
+    text-align: center;
+    margin: 2px 0 0 0;
+  }
+  .subtitle{
+    font-size: 12px;
+    text-align: center;
+    max-width: 36ch;     /* avoid super long lines */
+    margin: 0 auto;
+  }
+
+  /* small polish: chips + inputs breathe better on narrow screens */
+  .bar{ gap: 8px; }
+  .chip{ padding: 6px 10px; font-size: 12px; }
+  .input{ padding: 11px 12px; }
+}
+
 </style>
 </head>
 <body>
