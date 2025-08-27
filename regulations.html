@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Asianloop • Regulation Links Hub</title>
+<meta name="description" content="Quick access hub to Malaysian Acts, Orders, and global standards PDFs used by Asianloop Calibration Lab."/>
+<style>
+  :root{
+    --bg:#0b1020;--card:#111633;--muted:#93a0c2;--text:#e9efff;--accent:#7c9dff;
+    --chip:#1b2347;--chip-text:#c9d5ff;--border:#1e2a57;--ok:#27c498;--warn:#e9b44c;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1060px;margin:0 auto;padding:20px}
+  header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .brand{display:flex;gap:12px;align-items:center}
+  .brand img{width:44px;height:44px;border-radius:10px;object-fit:cover;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+  h1{font-size:20px;margin:0}
+  .subtitle{color:var(--muted);font-size:13px}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .input{flex:1;min-width:220px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text)}
+  .list{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{background:var(--chip);color:var(--chip-text);padding:6px 10px;border-radius:999px;font-size:12px;border:1px solid var(--border);cursor:pointer;user-select:none}
+  .chip.active{outline:2px solid var(--accent)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+  .badge{display:inline-block;background:#0f1a3f;border:1px solid var(--border);color:var(--chip-text);padding:2px 8px;border-radius:999px;font-size:11px}
+  .desc{color:var(--muted);font-size:13px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{appearance:none;border:1px solid var(--border);background:#0d1533;color:var(--text);padding:8px 10px;border-radius:10px;font-size:13px;cursor:pointer}
+  .btn:hover{border-color:#2d3a78}
+  .btn.small{font-size:12px;padding:6px 8px}
+  .small{font-size:12px;color:var(--muted)}
+  .note{background:#0d1533;border:1px dashed var(--border);padding:10px 12px;border-radius:10px;color:var(--muted);font-size:13px}
+  footer{margin-top:22px;color:var(--muted);font-size:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  @media (max-width:520px){ .row .btn{flex:1} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <img src="logo.jpg" alt="Asianloop logo"/>
+      <div>
+        <h1>Regulation Links Hub</h1>
+        <div class="subtitle">Quick access to Malaysian Acts & Orders (PDF) + global metrology/ILAC/OIML docs for Asianloop Calibration Lab.</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="note">
+    🔒 Privacy: This page runs entirely in your browser. No data is uploaded. You can edit the list inside the code.
+  </div>
+
+  <div class="bar">
+    <input id="q" class="input" placeholder="Search… (e.g., Customs, STA 2010, OIML R 117, ILAC P10, Akta 71)"/>
+    <div id="chips" class="list"></div>
+  </div>
+
+  <div id="grid" class="grid"></div>
+
+  <footer>
+    <span class="small">Last updated:</span><span id="updated" class="small"></span>
+    <span class="small">•</span><span class="small">Tip: Bookmark and share with your team.</span>
+  </footer>
+
+  <section class="note" style="margin-top:14px">
+    <strong>Disclaimer</strong><br/>
+    The external PDFs linked here are published by their respective owners (ministries, regulators, ILAC/OIML, etc.). Content may change without notice.
+    This hub is for information only and does not constitute legal or compliance advice. For the latest official requirements, consult the issuing authority.
+  </section>
+</div>
+
+<script>
+  // ------- DATA: PDFs only -------
+  // Tags: Customs, MITI/STA, Weights & Measures, Environment (DOE), Fire/BOMBA, ILAC, OIML, SAMM, NMIM
+  const LINKS = [
+    // Weights & Measures / NMIM
+    {name:"Weights and Measures Act 1972 [Act 71] (EN)", url:"https://www.kpdn.gov.my/images/2024/awam/akta/kpdn/ACT%2071%20.pdf", tag:"Weights & Measures", desc:"Jabatan Timbang & Sukat: legal units, weighing & measuring instruments."},
+    {name:"Akta Timbang dan Sukat 1972 [Akta 71] (BM)", url:"https://www.kpdn.gov.my/images/2024/awam/akta/kpdn/AKTA%2071%20.pdf", tag:"Weights & Measures", desc:"Versi Bahasa Melayu Akta 71."},
+    {name:"National Measurement System Act 2007 [Act 675]", url:"https://nmim.gov.my/wp-content/uploads/2024/12/Act-675-as-at-1-Nov-2017.pdf", tag:"NMIM", desc:"Act establishing national measurement standards & traceability (NMIM)."},
+
+    // Customs & related Orders
+    {name:"Customs Act 1967 [Act 235]", url:"https://www.customs.gov.my/ms/pg/Akta%20Kastam/AKTA%20KASTAM%201967-1.pdf", tag:"Customs", desc:"Main customs law for Malaysia."},
+    {name:"Customs (Prohibition of Imports) Order 2023 – P.U.(A) 117/2023", url:"https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1809215/PUA117.pdf", tag:"Customs", desc:"Lists goods restricted/subject to conditions for import."},
+    {name:"Customs (Prohibition of Exports) Order 2023 – P.U.(A) 122/2023", url:"https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PUA%20122.pdf", tag:"Customs", desc:"Lists goods restricted/subject to conditions for export."},
+
+    // MITI / STA
+    {name:"Strategic Trade Act 2010 [Act 708]", url:"https://umresearch.um.edu.my/wp-content/uploads/2024/05/Act-708-STRATEGIC-TRADE-ACT-2010.pdf", tag:"MITI/STA", desc:"Controls export/transit/brokering of strategic items."},
+    {name:"Strategic Trade (Strategic Items) List 2021", url:"https://umresearch.um.edu.my/wp-content/uploads/2024/03/STRATEGIC_TRADE_STRATEGIC_ITEMS_LIST_2021_Eng.pdf", tag:"MITI/STA", desc:"Detailed controlled items under STA 2010."},
+
+    // Environment (DOE) — key sub-regulations
+    {name:"Environmental Quality Act 1974 [Act 127]", url:"https://www.doe.gov.my/wp-content/uploads/2022/11/Environmental_Quality_Act_1974_-_ACT_127.pdf", tag:"Environment (DOE)", desc:"Framework for pollution control & environmental protection."},
+    {name:"Environmental Quality (Clean Air) Regulations 2014", url:"https://www.doe.gov.my/wp-content/uploads/2014/05/Environmental-Quality-Clean-Air-Regulations-2014.pdf", tag:"Environment (DOE)", desc:"Emission limits, stacks, monitoring requirements (CAR 2014)."},
+    {name:"Environmental Quality (Scheduled Wastes) Regulations 2005", url:"https://www.doe.gov.my/wp-content/uploads/2021/09/ENVIRONMENTAL-QUALITY-SCHEDULED-WASTES-REGULATIONS-2005.pdf", tag:"Environment (DOE)", desc:"SW codes, handling, storage, consignment notes."},
+    {name:"Environmental Quality (Industrial Effluent) Regulations 2009", url:"https://www.doe.gov.my/wp-content/uploads/2019/12/Environmental-Quality-Industrial-Effluent-Regulations-2009.pdf", tag:"Environment (DOE)", desc:"Effluent standards, monitoring, approvals."},
+
+    // Fire/BOMBA
+    {name:"Fire Services Act 1988 [Act 341]", url:"https://medicine.um.edu.my/pdf/OSHE/resources/1.%20Acts/FIRE%20SERVICES%20ACT%201988.pdf", tag:"Fire/BOMBA", desc:"Fire safety powers, approvals & requirements (BOMBA)."},
+
+    // ILAC policies (direct)
+    {name:"ILAC P10:2020 – Policy on Metrological Traceability", url:"https://ilac.org/wp-content/uploads/2020/07/ILAC-P10-01-2020.pdf", tag:"ILAC", desc:"Traceability policy aligned with ISO/IEC 17025."},
+    {name:"ILAC P14:2020 – Policy for Measurement Uncertainty in Calibration", url:"https://ilac.org/wp-content/uploads/2020/07/ILAC-P14-01-2020.pdf", tag:"ILAC", desc:"How to evaluate & state calibration uncertainty / CMCs."},
+    {name:"ILAC G24:2007 – Guidelines for the Determination of Calibration Intervals", url:"https://ilac.org/wp-content/uploads/2011/11/ILAC_G24_2007_Guidelines_for_the_Determination_of_Calibration_Intervals.pdf", tag:"ILAC", desc:"Classic ILAC guidance on setting recalibration intervals."},
+
+    // OIML Recommendations & joint guide
+    {name:"OIML R 117-1 (2007) – Liquids other than water (systems)", url:"https://www.oiml.org/en/files/pdf_r/r117-1-e07.pdf", tag:"OIML", desc:"Dynamic measuring systems for liquids other than water (custody transfer)."},
+    {name:"OIML R 117-2 (2014) – Metrological controls & tests", url:"https://www.oiml.org/en/files/pdf_r/r117-2-e14.pdf", tag:"OIML", desc:"Type evaluation / performance tests."},
+    {name:"OIML R 117-3 (2015) – Test report format", url:"https://www.oiml.org/en/files/pdf_r/r117-3-e14.pdf", tag:"OIML", desc:"Standardized reporting for R117 tests."},
+    {name:"OIML D 10 / ILAC G24 (2022) – Recalibration intervals (joint)", url:"https://www.oiml.org/en/files/pdf_d/d010-e22.pdf", tag:"OIML", desc:"Latest joint OIML-ILAC guidance for recalibration intervals."},
+
+    // Standards Malaysia (SAMM) – policies
+    {name:"SAMM Policy 1 (SP1) – Terms & Conditions", url:"https://www.jsm.gov.my/images/SAMM_Policy_1_Terms__Conditions_Issue_5_19_September_2018_Amd_1_28_April_2022.pdf", tag:"SAMM", desc:"Department of Standards Malaysia: accreditation terms."},
+    {name:"SAMM Policy 8 (SP8) – Site Calibration/Testing Labs", url:"https://jsm.gov.my/images/3-accreditation/resources/samm/document/SAMM_Policy_8_Site_Calibration_and_Testing_Lab_Issue_2_28_February_2007_Amd_1_11_August_2014.pdf", tag:"SAMM", desc:"Requirements for site work under SAMM accreditation."}
+  ];
+
+  const TAGS = ["All","Customs","MITI/STA","Weights & Measures","Environment (DOE)","Fire/BOMBA","ILAC","OIML","SAMM","NMIM"];
+
+  // ------- UI logic -------
+  const grid = document.getElementById("grid");
+  const chipsEl = document.getElementById("chips");
+  const q = document.getElementById("q");
+  const updated = document.getElementById("updated");
+  updated.textContent = new Date().toLocaleString();
+
+  let activeTag = "All";
+
+  function renderChips(){
+    chipsEl.innerHTML = "";
+    TAGS.forEach(t=>{
+      const b = document.createElement("button");
+      b.textContent = t;
+      b.className = "chip" + (t===activeTag ? " active":"");
+      b.onclick = ()=>{ activeTag=t; render(); renderChips(); };
+      chipsEl.appendChild(b);
+    });
+  }
+
+  function match(item, term){
+    if(!term) return true;
+    term = term.toLowerCase();
+    return (
+      item.name.toLowerCase().includes(term) ||
+      item.desc.toLowerCase().includes(term) ||
+      item.tag.toLowerCase().includes(term)
+    );
+  }
+
+  function openPdf(url){
+    const w = Math.min(1000, Math.floor(window.innerWidth*0.96));
+    const h = Math.min(800, Math.floor(window.innerHeight*0.94));
+    const feat = `popup=yes,width=${w},height=${h},menubar=1,toolbar=1,location=0,status=0,scrollbars=1,resizable=1`;
+    const win = window.open(url, "_blank", feat);
+    if(!win || win.closed || typeof win.closed=="undefined"){
+      window.open(url, "_blank");
+    }
+  }
+
+  function copyLink(url){
+    navigator.clipboard?.writeText(url).then(()=>{
+      alert("Link copied to clipboard.");
+    }).catch(()=>{ /* ignore */ });
+  }
+
+  function render(){
+    const term = q.value.trim().toLowerCase();
+    const filtered = LINKS.filter(l=>{
+      const tagOk = (activeTag==="All") || (l.tag===activeTag);
+      return tagOk && match(l, term);
+    });
+    grid.innerHTML = "";
+    if(filtered.length===0){
+      const empty = document.createElement("div");
+      empty.className = "card";
+      empty.innerHTML = "<div><strong>No results</strong></div><div class='desc'>Try a different search or category.</div>";
+      grid.appendChild(empty);
+      return;
+    }
+    filtered.forEach(l=>{
+      const card = document.createElement("div");
+      card.className = "card";
+      const host = new URL(l.url).host.replace("www.","");
+      card.innerHTML = `
+        <div class="badge">${l.tag}</div>
+        <div><strong>${l.name}</strong></div>
+        <div class="desc">${l.desc}</div>
+        <div class="small">Host: ${host}</div>
+      `;
+      const row = document.createElement("div");
+      row.className = "row";
+      const open = document.createElement("button");
+      open.className = "btn";
+      open.textContent = "Open PDF";
+      open.onclick = ()=>openPdf(l.url);
+      const copy = document.createElement("button");
+      copy.className="btn small";
+      copy.textContent = "Copy link";
+      copy.onclick = ()=>copyLink(l.url);
+      row.appendChild(open);
+      row.appendChild(copy);
+      card.appendChild(row);
+      grid.appendChild(card);
+    });
+  }
+
+  q.addEventListener("input", render);
+  renderChips();
+  render();
+</script>
+</body>
+</html>
